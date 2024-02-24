@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "79506262265",
+    "project_id": "hungerhaven-27983",
+    "storage_bucket": "hungerhaven-27983.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79506262265:android:bef1d762b2c2f2e0ac7a28",
+        "android_client_info": {
+          "package_name": "com.hungerheaven.deliveryboy.hungerheavend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79506262265-js1i7ckae1dtf50cfq30hq5al2tm9h36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu9lXG3oqFYRX_nn9fcDiGkG1cXnLuy-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79506262265-js1i7ckae1dtf50cfq30hq5al2tm9h36.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "79506262265-fdlqk4d2k5p0jn3fq3ot70mo86j1u83i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hungerheaven.deliveryboy.hungerheavend.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79506262265:android:8ff0008998d2865aac7a28",
+        "android_client_info": {
+          "package_name": "com.hungerheaven.deliveryboy.hungerheavend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79506262265-js1i7ckae1dtf50cfq30hq5al2tm9h36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu9lXG3oqFYRX_nn9fcDiGkG1cXnLuy-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79506262265-js1i7ckae1dtf50cfq30hq5al2tm9h36.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "79506262265-fdlqk4d2k5p0jn3fq3ot70mo86j1u83i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hungerheaven.deliveryboy.hungerheavend.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

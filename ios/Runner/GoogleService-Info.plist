@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>79506262265-7sg13ksrt1cahi41l5ados6dderr7lgp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.79506262265-7sg13ksrt1cahi41l5ados6dderr7lgp</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDyJ44wnJovrR7t82a0I6iroZytpYnPbis</string>
+	<key>GCM_SENDER_ID</key>
+	<string>79506262265</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hungerheaven.deliveryboy.hungerheavend</string>
+	<key>PROJECT_ID</key>
+	<string>hungerhaven-27983</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hungerhaven-27983.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:79506262265:ios:d144a40848a48db8ac7a28</string>
+</dict>
+</plist>
