@@ -11,8 +11,6 @@ import 'package:hungerheavend/splash_screen.dart';
 import 'package:hungerheavend/utils/constants/sizes.dart';
 import 'package:hungerheavend/utils/constants/text_strings.dart';
 
-import '../../rest_rt/signup_rest.dart';
-
 class TLoginForm extends StatelessWidget {
   const TLoginForm({super.key});
 
@@ -141,25 +139,13 @@ class TSignInController extends GetxController {
           email: email.trim(), password: password.trim());
 
       final userQuery = await FirebaseFirestore.instance
-          .collection("rest_owners")
+          .collection("deliverer_details")
           .where("email", isEqualTo: credential.user?.email!.trim())
           .get();
 
       if (userQuery.docs.isNotEmpty) {
         final user = userQuery.docs.first.data();
         final userId = userQuery.docs.first.id;
-
-        // Find the corresponding rest_details document
-        final restDetailsQuery = await FirebaseFirestore.instance
-            .collection("rest_details")
-            .where("ownerId", isEqualTo: userId)
-            .get();
-
-        String? restaurantId;
-        if (restDetailsQuery.docs.isNotEmpty) {
-          // Found rest_details document, get the restaurantId
-          restaurantId = restDetailsQuery.docs.first.id;
-        }
 
         // Save user details and restaurantId
         sharedPref.write('isLogin', true);
@@ -168,20 +154,10 @@ class TSignInController extends GetxController {
         sharedPref.write("name", user["fullname"]);
         sharedPref.write("email", user["email"]);
         sharedPref.write("phone", user["phone"]);
-        sharedPref.write("rest_added", user["isRestaurantAdded"]);
-        sharedPref.write('restaurantAdded', user["isRestaurantAdded"]);
-        sharedPref.write(
-            SplashScreenState.isRestaurantAdded, user["isRestaurantAdded"]);
-        sharedPref.write("restaurantId", restaurantId); // Save the restaurantId
         Fluttertoast.showToast(msg: "Login Success");
         await sharedPref.save();
 
-        if (sharedPref.read("restaurantAdded") == true ||
-            sharedPref.read(SplashScreenState.isRestaurantAdded) == true) {
-          Get.offAll(() => const NavigationMenu());
-        } else {
-          Get.to(() => const RestSignUp());
-        }
+        Get.offAll(() => const NavigationMenu());
       } else {
         debugPrint("User not found in Firestore");
         Fluttertoast.showToast(msg: "Invalid Email or Password!");

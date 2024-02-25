@@ -102,7 +102,8 @@ class VerifyEmailScreenState extends State<VerifyEmailScreen> {
       "fullname": sharedPref.read("signup_name").toString(),
       "email": sharedPref.read("signup_email").toString(),
       "phone": sharedPref.read("signup_phone").toString(),
-      "isRestaurantAdded": false,
+      "latitude": sharedPref.read("signup_latitude").toString(),
+      "longitude": sharedPref.read("signup_longitude").toString(),
     };
 
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -111,7 +112,7 @@ class VerifyEmailScreenState extends State<VerifyEmailScreen> {
             email: sharedPref.read("signup_email"),
             password: sharedPref.read("signup_password"));
     debugPrint(credential.user.toString());
-    DocumentReference doc = await db.collection("rest_owners").add(user);
+    DocumentReference doc = await db.collection("deliverer_details").add(user);
     debugPrint("Verify Email Document id : ${doc.id}");
     Fluttertoast.showToast(msg: "Signup Success");
     Future.delayed(const Duration(seconds: 2));
@@ -182,15 +183,10 @@ class VerifyEmailScreenState extends State<VerifyEmailScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                   style: ElevatedButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
-                      side: const BorderSide(color: Colors.amber)
-                      ),
-                  onPressed: (isLoading && isOtpVerified)
-                      ? null
-                      : () async {
-                          verifyOtp();
-                        },
+                      side: const BorderSide(color: Colors.amber)),
+                  onPressed: (isLoading && isOtpVerified) ? null : verifyOtp,
                   child: const Text('Verify'),
                 ),
               ),

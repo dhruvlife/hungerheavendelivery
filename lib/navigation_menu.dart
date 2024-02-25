@@ -36,7 +36,7 @@ class NavigationMenu extends StatelessWidget {
               NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
             ]),
       ),
-      body: Obx(() => controller.Screens[controller.selectedIndex.value]),
+      body: Obx(() => controller.screens[controller.selectedIndex.value]),
     );
   }
 }
@@ -44,9 +44,8 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
-  // ignore: non_constant_identifier_names
-  final Screens = [
-    const HomeScreen(),
+  final screens = [
+    HomeScreen(),
     const Addfood(),
     const Profile(),
   ];

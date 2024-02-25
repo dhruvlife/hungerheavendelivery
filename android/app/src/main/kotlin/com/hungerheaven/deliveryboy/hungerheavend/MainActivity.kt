@@ -1,4 +1,4 @@
-package com.hungerheaven.deliveryboy.hungerheavend
+package com.hungerheaven.deliverer
 
 import io.flutter.embedding.android.FlutterActivity
 

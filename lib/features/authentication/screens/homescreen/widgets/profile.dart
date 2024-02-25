@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:hungerheavend/features/authentication/screens/logout/logout_screen.dart';
 import 'package:hungerheavend/myuihelper.dart';
 import 'package:hungerheavend/utils/constants/sizes.dart';
 
@@ -28,7 +25,7 @@ class Profile extends StatelessWidget {
         String userId, Map<String, dynamic> updatedData) async {
       try {
         await FirebaseFirestore.instance
-            .collection("rest_owners")
+            .collection("deliverer_detail")
             .doc(userId)
             .update(updatedData);
         sharedPref.write("name", name.text);

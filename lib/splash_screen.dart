@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hungerheavend/features/authentication/screens/login/login.dart';
 import 'package:hungerheavend/features/authentication/screens/onboarding/onboarding.dart';
-import 'package:hungerheavend/features/authentication/screens/rest_rt/signup_rest.dart';
 import 'package:hungerheavend/navigation_menu.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +22,6 @@ class SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  static const String isRestaurantAdded = "added";
   static const String keylogin = "login";
 
   @override
@@ -73,20 +71,16 @@ class SplashScreenState extends State<SplashScreen>
     var sharedPref = GetStorage();
     await sharedPref.initStorage;
     var isLogin = sharedPref.read(keylogin);
-    var restaurantAdded = sharedPref.read(isRestaurantAdded) ?? false;
 
     debugPrint("""Let's print the bool values\n
-    1) Is login: $isLogin\n
-    2) Restaurant Added: $restaurantAdded""");
+    1) Is login: $isLogin\n""");
 
     Timer(
       const Duration(seconds: 3),
       () {
         if (isLogin != null) {
-          if (isLogin && restaurantAdded) {
-            Get.offAll(() =>const NavigationMenu());
-          } else if (isLogin && !restaurantAdded) {
-            Get.offAll(() => const RestSignUp());
+          if (isLogin) {
+            Get.offAll(() => const NavigationMenu());
           } else {
             Get.to(() => const LoginScreen());
           }

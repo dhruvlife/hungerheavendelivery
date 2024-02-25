@@ -6,9 +6,9 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DeliveredFoodScreen extends StatelessWidget {
-  final String restaurantId;
+  final String delivererId;
 
-  const DeliveredFoodScreen({super.key, required this.restaurantId});
+  const DeliveredFoodScreen({super.key, required this.delivererId});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class DeliveredFoodScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('food_details')
-            .where('restaurantId', isEqualTo: restaurantId)
+            .where('deliveredId', isEqualTo: delivererId)
             .where('status', isEqualTo: 'delivered')
             .snapshots(),
         builder: (context, snapshot) {
@@ -29,11 +29,11 @@ class DeliveredFoodScreen extends StatelessWidget {
             );
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return const Center(
-              child: Text('No delivered orders found.'),
+              child: Text('No assigned orders found.'),
             );
           } else {
             // Data is loaded, build the UI
-            return _buildOngoingOrdersList(snapshot.data!.docs);
+            return _buildAssignedOrdersList(snapshot.data!.docs);
           }
         },
       ),
@@ -67,7 +67,7 @@ class DeliveredFoodScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOngoingOrdersList(List<QueryDocumentSnapshot> documents) {
+  Widget _buildAssignedOrdersList(List<QueryDocumentSnapshot> documents) {
     return ListView.builder(
       itemCount: documents.length,
       itemBuilder: (context, index) {
@@ -76,79 +76,123 @@ class DeliveredFoodScreen extends StatelessWidget {
         String itemName = documents[index]['foodName'];
         String itemCat = documents[index]['foodCategory'];
         String orderStatus = documents[index]['status'];
+        String restaurantId = documents[index]['restaurantId'];
 
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            elevation: 12,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            color: Colors.black,
-            child: Column(
-              children: [
-                // ClipRRect(
-                //   borderRadius: const BorderRadius.all(Radius.circular(15)),
-                //   child: Image.network(
-                //     imageLink,
-                //     width: Get.width * 0.95,
-                //   ),
-                // ),
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                  child: Stack(
-                    alignment: Alignment.center,
+        return FutureBuilder<DocumentSnapshot>(
+          future: FirebaseFirestore.instance
+              .collection('rest_details')
+              .doc(restaurantId)
+              .get(),
+          builder: (context, restaurantSnapshot) {
+            if (restaurantSnapshot.connectionState == ConnectionState.waiting) {
+              // Show a loading indicator while fetching restaurant details
+              return const CircularProgressIndicator();
+            } else if (restaurantSnapshot.hasError) {
+              return Center(
+                child: Text('Error: ${restaurantSnapshot.error}'),
+              );
+            } else if (!restaurantSnapshot.hasData) {
+              return const Center(
+                child: Text('Restaurant details not found.'),
+              );
+            } else {
+              // Data is loaded, build the UI
+              String restaurantName =
+                  restaurantSnapshot.data!['name'].toString();
+              String restaurantAddress =
+                  restaurantSnapshot.data!['address'].toString();
+
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 12,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  color: Colors.black,
+                  child: Column(
                     children: [
-                      SizedBox(
-                        width: Get.width * 0.95,
-                        height: Get.width * 0.6, // Adjust the height as needed
-                        child: Image.network(
-                          imageLink,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
+                      // Image
+                      ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SizedBox(
+                              width: Get.width * 0.95,
+                              height: Get.width * 0.6,
+                              child: Image.network(
+                                imageLink,
+                                fit: BoxFit.cover,
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  }
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(Icons.error);
+                                },
                               ),
-                            );
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(Icons.error);
-                          },
+                            ),
+                            if (imageLink
+                                .isEmpty) // Show placeholder if image link is empty
+                              const Icon(Icons.image, size: 40),
+                          ],
                         ),
                       ),
-                      if (imageLink
-                          .isEmpty) // Show placeholder if image link is empty
-                        const Icon(Icons.image, size: 40),
+
+                      // Order details
+                      ListTile(
+                        title: Text(
+                          itemName.capitalize!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        trailing: Text('Status: ${orderStatus.toUpperCase()}'),
+                        subtitle: Text(
+                          itemCat.capitalize!,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+
+                      // Restaurant details
+                      ListTile(
+                        title: Text(
+                          'Restaurant Name: $restaurantName',
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        subtitle: Text(
+                          'Resturant Address: $restaurantAddress',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-
-                ListTile(
-                  title: Text(
-                    itemName.capitalize!,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  trailing: Text('Status: ${orderStatus.toUpperCase()}'),
-                  subtitle: Text(
-                    itemCat.capitalize!,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+              );
+            }
+          },
         );
       },
     );
