@@ -8,7 +8,7 @@
 
 
 <p align="center">
-<img  width="400" height="400" src="https://github-production-user-asset-6210df.s3.amazonaws.com/123609564/307572893-9bd1fef3-e063-4f29-a20b-040422157e70.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240225%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240225T070350Z&X-Amz-Expires=300&X-Amz-Signature=6441400b48e76ba1c529ca6274f91010d1b0ce3a487e0b8a8b1e84fd30c922d0&X-Amz-SignedHeaders=host&actor_id=123609564&key_id=0&repo_id=762957460">
+<img  width="400" height="400" src="https://raw.githubusercontent.com/dhruvlife/hungerheaven/master/assets/logos/hh.png">
 </p>
 
   
@@ -53,10 +53,10 @@
 ## `Local Implementation`
 - Intital step is to   Clone the Repo and install dependencies
  ```
-https://github.com/dhruvlife/hungerheaven.git
+https://github.com/dhruvlife/hungerheavendelivery.git
  ```
  ```
-cd hungerheaven
+cd hungerheavendelivery
  ```
  ```
 flutter pub get
@@ -66,7 +66,7 @@ flutter pub get
 ```
 flutter run
 ```
-- This will launch the HungerHeaven app on your device.
+- This will launch the Hunger Heaven | Delivery app on your device.
 
 
 
@@ -89,31 +89,53 @@ flutter run
 - Addresses hunger by efficiently redistributing surplus food, making the best use of resources.
 
 ## `Screenshots and Video`
-Home page
+| ![Login Screen](https://raw.githubusercontent.com/dhruvlife/hungerheavendelivery/master/assets/app_images/delivery_login.jpeg) | ![SignUp Screen](https://raw.githubusercontent.com/dhruvlife/hungerheavendelivery/master/assets/app_images/delivery_signup.jpeg) |
+|:---:|:---:|
+| Login Screen | SignUp Screen |
 
-idhr dalo apni!
+| ![Assigned Food Order](https://raw.githubusercontent.com/dhruvlife/hungerheavendelivery/master/assets/app_images/delivery_home_assign.jpeg) | ![Assigned Food Screen](https://raw.githubusercontent.com/dhruvlife/hungerheavendelivery/master/assets/app_images/delivery_home_delivered.jpeg) |
+|:---:|:---:|
+| Ongoing Food Order | Assigned Food Screen |
 
 
+| ![Profile Screen](https://raw.githubusercontent.com/dhruvlife/hungerheaven/master/assets/app_images/partner_profile.jpeg) | |
+|:---:|:---:|
+| Profile Screen | |
 
 
-## 💥 `How to Contribute to Hunger-Heaven?`
+## How to Contribute
+💥 **How to Contribute to Hunger-Heaven?**
 
-- Take a look at the Existing [Issues](https://github.com/dhruvlife/hungerheaven/issues) or create your own Issues!
-- Wait for the Issue to be assigned to you.
-- Fork the repository
->click on the uppermost button <img src="https://github.com/vxsourcerer/hungerheaven/assets/123609564/fbf14441-5030-4076-b00a-1781ccbe5e5" width=50>
-- Clone your forked copy of the project.
-```
-git clone --depth 1 https://github.com/<your_user_name>/dhruvlife.git
+1. Take a look at the existing issues or create your own issues!
+2. Wait for the issue to be assigned to you.
+3. Fork the repository: [Hunger-Heaven-Delivery Repository](https://github.com/dhruvlife/hungerheavendelivery)
+4. Clone the repository to your local machine using the following command:
+    ```bash
+    git clone https://github.com/dhruvlife/hungerheavendelivery.git
+    ```
+5. Create a new branch for your contributions:
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+6. Make your changes and commit them:
+    ```bash
+    git add .
+    git commit -m "Add your meaningful commit message here"
+    ```
+7. Push your changes to your fork:
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+8. Create a Pull Request (PR) from your fork to the `main` branch of the original repository.
+9. Wait for your PR to be reviewed and merged.
 
-```
+Thank you for contributing to Hunger-Heaven! 🌟
 
 ## `Builders`
 
-* [Yash Mistryl](https://github.com/)
-* [Dhruv Thakkar](https://github.com/)
-* [Smit Mistry]()
-* [Himanshu Sanghani](https://github.com/)
+* [Yash Mistry](https://github.com/yash240408)
+* [Dhruv Thakkar](https://github.com/dhruvlife)
+* [Smit Mistry](https://github.com/SmitM1)
 
 
 # ⭐️ `Star us`
