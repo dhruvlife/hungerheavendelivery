@@ -51,9 +51,9 @@
 
 
 ## `Local Implementation`
-- Intital step is to   Clone the Repo and install dependencies
+- Intital step is to Clone the Repo and install dependencies
  ```
-https://github.com/dhruvlife/hungerheavendelivery.git
+git clone https://github.com/dhruvlife/hungerheavendelivery.git
  ```
  ```
 cd hungerheavendelivery
