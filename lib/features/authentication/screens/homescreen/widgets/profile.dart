@@ -25,7 +25,7 @@ class Profile extends StatelessWidget {
         String userId, Map<String, dynamic> updatedData) async {
       try {
         await FirebaseFirestore.instance
-            .collection("deliverer_detail")
+            .collection("deliverer_details")
             .doc(userId)
             .update(updatedData);
         sharedPref.write("name", name.text);
@@ -120,7 +120,7 @@ class Profile extends StatelessWidget {
                     width: double.infinity,
                     child: OutlinedButton(
                       onPressed: () {
-                        DUI.CustomAlertBox(context, "Logout proccessing");
+                        DUI.CustomAlertBox(context, "Proceed to Logout ?");
                       },
                      style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.redAccent,

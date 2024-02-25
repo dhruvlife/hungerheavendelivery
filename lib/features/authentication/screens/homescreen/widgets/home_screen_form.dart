@@ -65,14 +65,26 @@ class LocationController extends GetxController {
     super.onInit();
   }
 
-  Future<void> startListeningToPositionStream() async {
+  void startListeningToPositionStream() async {
     LocationPermission permission = await Geolocator.requestPermission();
 
     if (permission == LocationPermission.denied) {
-      await requestLocationPermission();
+      Fluttertoast.showToast(
+        msg: 'Location permissions are denied.',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
     } else if (permission == LocationPermission.deniedForever) {
-      showToast(
-          'Location permissions are permanently denied.\nPlease enable them in app settings.');
+      Fluttertoast.showToast(
+        msg:
+            'Location permissions are permanently denied.\nPlease enable them in app settings.',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
     } else {
       LocationSettings locationSettings;
 
@@ -96,18 +108,74 @@ class LocationController extends GetxController {
         );
       }
 
-      positionStream = Geolocator.getPositionStream(
-        locationSettings: locationSettings,
-      ).handleError((error) {
-        handleLocationError(error);
-      }).listen((Position? position) async {
-        if (position != null) {
+      Timer.periodic(const Duration(seconds: 30), (timer) async {
+        try {
+          Position? position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high,
+          );
+
           userLocation.value = position;
           await updateUserLocationInFirestore(position);
+        } on LocationServiceDisabledException catch (e) {
+          // Handle location service disabled exception
+          print('LocationServiceDisabledException: $e');
+
+          // Show toast message to inform the user
+          Fluttertoast.showToast(
+            msg: 'Please enable location services for the best experience.',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
         }
       });
     }
   }
+
+  // Future<void> startListeningToPositionStream() async {
+  //   LocationPermission permission = await Geolocator.requestPermission();
+
+  //   if (permission == LocationPermission.denied) {
+  //     await requestLocationPermission();
+  //   } else if (permission == LocationPermission.deniedForever) {
+  //     showToast(
+  //         'Location permissions are permanently denied.\nPlease enable them in app settings.');
+  //   } else {
+  //     LocationSettings locationSettings;
+
+  //     if (defaultTargetPlatform == TargetPlatform.android) {
+  //       locationSettings = AndroidSettings(
+  //         accuracy: LocationAccuracy.high,
+  //         distanceFilter: 100,
+  //         forceLocationManager: true,
+  //         intervalDuration: const Duration(seconds: 10),
+  //         foregroundNotificationConfig: const ForegroundNotificationConfig(
+  //           notificationText:
+  //               "Hunger Heaven is using your device location to send you the update of any order",
+  //           notificationTitle: "Thank you for your service",
+  //           enableWakeLock: true,
+  //         ),
+  //       );
+  //     } else {
+  //       locationSettings = const LocationSettings(
+  //         accuracy: LocationAccuracy.high,
+  //         distanceFilter: 0,
+  //       );
+  //     }
+
+  //     positionStream = Geolocator.getPositionStream(
+  //       locationSettings: locationSettings,
+  //     ).handleError((error) {
+  //       handleLocationError(error);
+  //     }).listen((Position? position) async {
+  //       if (position != null) {
+  //         userLocation.value = position;
+  //         await updateUserLocationInFirestore(position);
+  //       }
+  //     });
+  //   }
+  // }
 
   Future<void> requestLocationPermission() async {
     bool granted = await showDialog(
@@ -137,7 +205,7 @@ class LocationController extends GetxController {
 
     if (granted == true) {
       // User granted permission, restart the location stream
-      await startListeningToPositionStream();
+      startListeningToPositionStream();
     } else {
       showToast('Location permissions are denied.');
     }

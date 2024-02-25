@@ -16,7 +16,7 @@ class DeliveredFoodScreen extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('food_details')
-            .where('deliveredId', isEqualTo: delivererId)
+            .where('delivererId', isEqualTo: delivererId)
             .where('status', isEqualTo: 'delivered')
             .snapshots(),
         builder: (context, snapshot) {
@@ -75,7 +75,6 @@ class DeliveredFoodScreen extends StatelessWidget {
         String imageLink = documents[index]['imagePath'];
         String itemName = documents[index]['foodName'];
         String itemCat = documents[index]['foodCategory'];
-        String orderStatus = documents[index]['status'];
         String restaurantId = documents[index]['restaurantId'];
 
         return FutureBuilder<DocumentSnapshot>(
@@ -86,7 +85,7 @@ class DeliveredFoodScreen extends StatelessWidget {
           builder: (context, restaurantSnapshot) {
             if (restaurantSnapshot.connectionState == ConnectionState.waiting) {
               // Show a loading indicator while fetching restaurant details
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             } else if (restaurantSnapshot.hasError) {
               return Center(
                 child: Text('Error: ${restaurantSnapshot.error}'),
@@ -111,79 +110,121 @@ class DeliveredFoodScreen extends StatelessWidget {
                   ),
                   color: Colors.black,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Image
-                      ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        child: Stack(
-                          alignment: Alignment.center,
+                      Card(
+                        elevation: 12,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        color: Colors.black,
+                        child: Column(
                           children: [
-                            SizedBox(
-                              width: Get.width * 0.95,
-                              height: Get.width * 0.6,
-                              child: Image.network(
-                                imageLink,
-                                fit: BoxFit.cover,
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  }
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
-                                              : null,
+                            ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(15)),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: double.infinity,
+                                    height: Get.width * 0.6,
+                                    child: Image.network(
+                                      imageLink,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                : null,
+                                          ),
+                                        );
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return const Icon(Icons.error);
+                                      },
                                     ),
-                                  );
-                                },
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(Icons.error);
-                                },
+                                  ),
+                                  if (imageLink.isEmpty)
+                                    const Icon(Icons.image, size: 40),
+                                ],
                               ),
                             ),
-                            if (imageLink
-                                .isEmpty) // Show placeholder if image link is empty
-                              const Icon(Icons.image, size: 40),
+                            ListTile(
+                              title: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${itemName.capitalize}",style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                  ),
+                                  Text(
+                                    "${itemCat.capitalize}",style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                  )
+                                ],
+                              ),
+                              trailing: const Text(
+                                'DELIVERED',
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-
-                      // Order details
-                      ListTile(
-                        title: Text(
-                          itemName.capitalize!,
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
+                      Card(
+                        elevation: 12,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
-                        trailing: Text('Status: ${orderStatus.toUpperCase()}'),
-                        subtitle: Text(
-                          itemCat.capitalize!,
-                          style: const TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-
-                      // Restaurant details
-                      ListTile(
-                        title: Text(
-                          'Restaurant Name: $restaurantName',
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        subtitle: Text(
-                          'Resturant Address: $restaurantAddress',
-                          style: const TextStyle(
-                            color: Colors.grey,
+                        color: Colors.black,
+                        child: ListTile(
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Restaurant Name: $restaurantName',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                              const Divider(
+                                height: 20, 
+                                thickness:
+                                    2,
+                                color: Colors
+                                    .lightBlueAccent, 
+                              ),
+                              Text(
+                                'Restaurant Address: $restaurantAddress',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ],
                           ),
                         ),
                       ),
